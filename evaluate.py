@@ -615,6 +615,52 @@ def evaluate(options):
         pass
     return
 
+def goEval(methods='f', suffix='warping_refine', dataset='inference', customDataFolder='example_images'):
+    """
+    Command to call evaluate.py:
+    python evaluate.py --methods=f --suffix=warping_refine --dataset=inference --customDataFolder=example_images
+    """
+    args = {
+        "methods": methods,
+        "suffix": suffix,
+        "dataset": dataset,
+        "customDataFolder": customDataFolder
+    }
+
+    if args.dataset == '':
+        args.keyname = 'evaluate'
+    else:
+        args.keyname = args.dataset
+        pass
+    args.test_dir = 'test/' + args.keyname
+
+    if args.testingIndex >= 0:
+        args.debug = True
+        pass
+    if args.debug:
+        args.test_dir += '_debug'
+        args.printInfo = True
+        pass
+
+    ## Write html for visualization
+    if False:
+        if False:
+            info_list = ['image_0', 'segmentation_0', 'segmentation_0_warping', 'depth_0', 'depth_0_warping']
+            writeHTML(args.test_dir, info_list, numImages=100, convertToImage=False, filename='index', image_width=256)
+            pass
+        if False:
+            info_list = ['image_0', 'segmentation_0', 'detection_0_planenet', 'detection_0_warping', 'detection_0_refine']
+            writeHTML(args.test_dir, info_list, numImages=20, convertToImage=True, filename='comparison_segmentation')
+            pass
+        if False:
+            info_list = ['image_0', 'segmentation_0', 'segmentation_0_manhattan_gt', 'segmentation_0_planenet', 'segmentation_0_warping']
+            writeHTML(args.test_dir, info_list, numImages=30, convertToImage=False, filename='comparison_segmentation')
+            pass
+        exit(1)
+        pass
+
+    evaluate(args)
+
 if __name__ == '__main__':
     args = parse_args()
 
